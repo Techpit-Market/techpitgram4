@@ -1,0 +1,4 @@
+$('#like-icon-post-<%= @post.id.to_s %>').
+  html('<%= link_to "???", like_path(@like), method: :DELETE, remote: true, class: "loved hide-text" %>');
+$('#like-text-post-<%= @post.id.to_s %>').
+  html('<%= j render "posts/like_text", { likes: @post.likes } %>');

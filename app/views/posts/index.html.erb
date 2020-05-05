@@ -1,0 +1,60 @@
+<% @posts.each do |post| %>
+  <div class="col-md-8 col-md-2 mx-auto">
+    <div class="card-wrap">
+      <div class="card">
+        <div class="card-header align-items-center d-flex">
+          <%= link_to user_path(post.user), class: "no-text-decoration" do %>
+            <%= image_tag avatar_url(post.user), class: "post-profile-icon" %>
+          <% end %>
+          <%= link_to user_path(post.user), class: "black-color no-text-decoration",
+            title: post.user.name do %>
+            <strong><%= post.user.name %></strong>
+          <% end %>
+          <% if post.is_belongs_to? current_user %>
+            <%= link_to post_path(post), method: :delete, class: "ml-auto mx-0 my-auto" do %>
+              <div class="delete-post-icon">
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <%= link_to(post_path(post)) do %>
+          <%= image_tag post.photos.first.image.url(:medium), class: "card-img-top" %>
+        <% end %>
+
+        <div class="card-body">
+          <div class="row parts">
+            <div id="like-icon-post-<%= post.id.to_s %>">
+              <% if post.liked_by(current_user).present? %>
+                <%= link_to "いいねを取り消す", like_path(post.liked_by(current_user)), method: :DELETE, remote: true, class: "loved hide-text" %>
+              <% else %>
+                <%= link_to "いいね", post_likes_path(post), method: :POST, remote: true, class: "love hide-text" %>
+              <% end %>
+            </div>
+            <%= link_to "", "#", class: "comment" %>
+          </div>
+          <div id="like-text-post-<%= post.id.to_s %>">
+            <%= render "like_text", { likes: post.likes } %>
+          </div>
+          <div>
+            <span><strong><%= post.user.name %></strong></span>
+            <span><%= post.caption %></span>
+            <div id="comment-post-<%= post.id.to_s %>">
+              <%= render 'comment_list', { post: post } %>
+            </div>
+            <%= link_to time_ago_in_words(post.created_at).upcase + "前", post_path(post),
+              class: "light-color post-time no-text-decoration" %>
+            <hr>
+            <div class="row actions" id="comment-form-post-<%= post.id.to_s %>">
+              <%= form_for [post, Comment.new], html: { class: "w-100" }, remote: true do |f| %>
+                <%= f.hidden_field :user_id, value: current_user.id %>
+                <%= f.hidden_field :post_id, value: post.id %>
+                <%= f.text_field :comment, class: "form-control comment-input border-0", placeholder: "コメント ...", autocomplete: :off %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

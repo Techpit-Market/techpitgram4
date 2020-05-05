@@ -1,0 +1,12 @@
+{
+  "name": "techpitgram4",
+  "private": true,
+  "dependencies": {},
+  "scripts": {
+    "postinstall": "npm run update:submodule",
+    "postupdate": "npm run update:submodule",
+    "update:submodule": "git submodule update --init && git submodule foreach git pull origin master && cd curriculum-textlint && npm install",
+    "check": "cd curriculum-textlint && npm run check",
+    "check:fix": "cd curriculum-textlint && npm run check:fix"
+  }
+}

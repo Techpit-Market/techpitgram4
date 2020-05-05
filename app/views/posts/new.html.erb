@@ -1,0 +1,37 @@
+<div class="d-flex flex-column align-items-center mt-3">
+  <div class="col-xl-7 col-lg-8 col-md-10 col-sm-11 post-card">
+    <div class="card">
+      <div class="card-header">
+        投稿画面
+      </div>
+      <div class="card-body">
+        <%= form_with model: @post, class: "upload-images p-0 border-0" do |f| %>
+          <div class="form-group row mt-2">
+            <div class="col-auto pr-0">
+              <%= image_tag avatar_url(current_user), class: "post-profile-icon" %>
+            </div>
+            <div class="col pl-0">
+              <%= f.text_field :caption, class: "form-control border-0", placeholder: "キャプションを書く" %>
+            </div>
+          </div>
+          <div class="mb-3">
+            <%= f.fields_for :photos do |i| %>
+              <%= i.file_field :image %>
+            <% end %>
+          </div>
+          <%= f.submit "投稿する", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#post_image').bind('change', function() {
+    var size_in_megabytes = this.files[0].size/1024/1024;
+    if (size_in_megabytes > 1) {
+      alert('ファイルサイズの最大は1MBまでです。違う画像を選んでください。');
+    }
+  });
+</script>
+

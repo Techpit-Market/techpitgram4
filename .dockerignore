@@ -1,0 +1,3 @@
+# .dockerignore は Docker image のビルド時に Docker Engine に転送したくないファイルを指定します
+.bundle
+vendor/bundle

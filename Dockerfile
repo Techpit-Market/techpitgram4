@@ -1,6 +1,12 @@
+# syntax=docker/dockerfile:experimental
+
 # ベースイメージを選定する
 FROM ruby:2.5.1-slim-stretch as techpitgram-depends-all
 
+# credential-helper を PATH が通っているところに置く
+COPY git-credential-github-token /usr/local/bin
+
+# アプリケーションに必要なツール・ライブラリを整理する
 RUN apt-get update -qq && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y  --no-install-recommends \
     imagemagick \
@@ -11,9 +17,17 @@ RUN apt-get update -qq && \
     liblzma-dev \
     libxml2-dev \
     libpq-dev \
-    libcurl4-openssl-dev && \
-  apt-get -y clean && \
-  rm -rf /var/lib/apt/list/*
+    libcurl4-openssl-dev \
+    git && \
+    apt-get clean && \
+    rm -r /var/lib/apt/lists/*
+
+# credential-helper を利用できるようにする
+RUN git config --global url."https://github.com".insteadOf ssh://git@github.com && \
+  git config --global --add url."https://github.com".insteadOf git://git@github.com && \
+  git config --global --add url."https://github.com/".insteadOf git@github.com: && \
+  git config --global credential.helper github-token && \
+  chmod +x /usr/local/bin/git-credential-github-token
 
 # アプリケーションの実行ディレクトリを作成
 RUN mkdir /techpitgram
@@ -23,7 +37,11 @@ WORKDIR /techpitgram
 # Railsとして起動するための依存ライブラリをインストール
 COPY Gemfile /techpitgram/Gemfile
 COPY Gemfile.lock /techpitgram/Gemfile.lock
-RUN bundle install
+
+# 認証情報を実行時に受け取るように設定し、bundle install を行う
+RUN --mount=type=secret,id=token,dst=/.github-token \
+ . /.github-token && \
+ bundle install
 
 # アプリケーションをコピー
 COPY . /techpitgram

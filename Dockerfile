@@ -24,7 +24,7 @@ WORKDIR /techpitgram
 # Railsとして起動するための依存ライブラリをインストール
 COPY Gemfile /techpitgram/Gemfile
 COPY Gemfile.lock /techpitgram/Gemfile.lock
-RUN bundle install --without development test
+RUN bundle install
 
 # アプリケーションをコピー
 COPY . /techpitgram

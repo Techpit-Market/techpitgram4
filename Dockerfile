@@ -1,10 +1,8 @@
 # ベースイメージを選定する
-FROM ruby:2.5.1-slim-stretch as base
+FROM ruby:2.5.1-slim-stretch as techpitgram-depends-all
 
-# アプリケーションに必要なツール・ライブラリを整理する
 RUN apt-get update -qq && \
-  apt-get install -y \
-    curl \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y  --no-install-recommends \
     imagemagick \
     build-essential \
     patch \
@@ -13,7 +11,9 @@ RUN apt-get update -qq && \
     liblzma-dev \
     libcurl4-openssl-dev \
     libxml2-dev \
-    libpq-dev
+    libpq-dev && \
+    apt-get clean && \
+    rm -r /var/lib/apt/lists/*
 
 # nodejs の10系をインストール
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \

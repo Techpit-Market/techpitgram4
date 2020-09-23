@@ -4,8 +4,7 @@ FROM ruby:2.5.1-slim-stretch as base
 # アプリケーションに必要なツール・ライブラリを整理する
 RUN apt-get update -qq && \
   apt-get install -y \
-    nodejs \
-    postgresql-client \
+    curl \
     imagemagick \
     build-essential \
     patch \
@@ -15,6 +14,10 @@ RUN apt-get update -qq && \
     libcurl4-openssl-dev \
     libxml2-dev \
     libpq-dev
+
+# nodejs の10系をインストール
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+  apt-get install -y nodejs
 
 # アプリケーションの実行ディレクトリを作成
 RUN mkdir /techpitgram

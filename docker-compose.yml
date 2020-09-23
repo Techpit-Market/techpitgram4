@@ -1,0 +1,29 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+  app:
+    image: techpitgram:latest
+    environment:
+      DATABASE_HOST: db
+    ports:
+      - 3000:3000
+
+  db:
+    image: postgres
+    volumes:
+      - "postgress-data:/var/lib/postgresql/data:delegated"
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  postgress-data:
+    driver: local

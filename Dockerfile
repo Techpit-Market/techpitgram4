@@ -9,15 +9,11 @@ RUN apt-get update -qq && \
     ruby-dev \
     zlib1g-dev \
     liblzma-dev \
-    libcurl4-openssl-dev \
     libxml2-dev \
-    libpq-dev && \
-    apt-get clean && \
-    rm -r /var/lib/apt/lists/*
-
-# nodejs の10系をインストール
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
-  apt-get install -y nodejs
+    libpq-dev \
+    libcurl4-openssl-dev && \
+  apt-get -y clean && \
+  rm -rf /var/lib/apt/list/*
 
 # アプリケーションの実行ディレクトリを作成
 RUN mkdir /techpitgram
@@ -31,6 +27,16 @@ RUN bundle install
 
 # アプリケーションをコピー
 COPY . /techpitgram
+
+FROM techpitgram-depends-all as techpitgram-build-assets
+
+# assetのビルド
+RUN bundle exec rails assets:precompile
+
+FROM techpitgram-depends-all as techpitgram-app
+
+# ビルドした asset をコピーする
+COPY --from=techpitgram-build-assets /techpitgram/public/assets /techpitgram/public
 
 # コンテナの起動時に実行したいスクリプト指定
 COPY tools/entrypoint.sh /usr/bin/

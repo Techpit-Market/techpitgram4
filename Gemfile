@@ -43,3 +43,7 @@ end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # gem '<YOUR_REPO_NAME>', github: '<YOUR_GITHUB_USERNAME>:<YOUR_REPO_NAME>'
+
+group :test do
+  gem 'minitest-reporters'
+end

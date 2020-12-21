@@ -23,3 +23,6 @@
 .byebug_history
 
 public/uploads/
+
+test/reports/
+test/html_reports/

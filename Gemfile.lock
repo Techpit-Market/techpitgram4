@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/kompiro/private-gem-test.git
+  revision: 687e81efb794330d39866e075378ed2389e7f55a
+  specs:
+    private-gem-test (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -468,6 +474,7 @@ DEPENDENCIES
   mini_racer (~> 0.3)
   minitest-reporters
   pg
+  private-gem-test!
   pry-rails
   puma (~> 3.7)
   rails (~> 5.1.4)

@@ -4,6 +4,25 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-18.04
+
+    services:
+      # サービスコンテナへのアクセスをするためのラベルを設定する
+      postgres:
+        # Docker Hub のイメージを指定する
+        image: postgres:11
+        # postgresのパスワードを指定する
+        env:
+          POSTGRES_PASSWORD: postgres
+        # postgres が起動するまでのヘルスチェックを入れる
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # host側にservice containerの5432ポートを公開する
+          - 5432:5432
+
     steps:
       - uses: actions/checkout@v2
       - name: Install packages
@@ -23,7 +42,5 @@ jobs:
         with:
           ruby-version: 2.5.1
           bundler-cache: true
-      - name: Launch docker-compose
-        run: docker-compose -f docker-compose-dev.yml up -d
       - name: Run test
         run: bundle exec rake test:db

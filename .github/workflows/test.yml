@@ -39,6 +39,8 @@ jobs:
             libpq-dev \
             libcurl4-openssl-dev 
       - uses: ruby/setup-ruby@v1.52.0
+        env:
+          BUNDLE_GITHUB__COM: ${{ secrets.PRIVATE_ACCESS_TOKEN }}
         with:
           ruby-version: 2.5.1
           bundler-cache: true
@@ -49,4 +51,4 @@ jobs:
         uses: mikepenz/action-junit-report@v1
         with:
           report_paths: 'test/reports/TEST-*.xml'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}

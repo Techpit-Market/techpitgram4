@@ -1,0 +1,29 @@
+name: Run rubocop
+
+on: [push]
+jobs:
+  check-rubocop:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install packages
+        run: |-
+          sudo apt-get update -qq && \
+            DEBIAN_FRONTEND=noninteractive sudo apt-get install -y  --no-install-recommends \
+            imagemagick \
+            build-essential \
+            patch \
+            ruby-dev \
+            zlib1g-dev \
+            liblzma-dev \
+            libxml2-dev \
+            libpq-dev \
+            libcurl4-openssl-dev 
+      - uses: ruby/setup-ruby@v1.52.0
+        env:
+          BUNDLE_GITHUB__COM: ${{ secrets.PRIVATE_ACCESS_TOKEN }}
+        with:
+          ruby-version: 2.5.1
+          bundler-cache: true
+      - name: Run rubocop
+        run: bundle exec rubocop

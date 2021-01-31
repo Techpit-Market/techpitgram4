@@ -7,9 +7,11 @@ Minitest::Reporters.use! [
   Minitest::Reporters::JUnitReporter.new
 ]
 
+# rubocop:disable Lint/EmptyClass
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   # fixtures :all
 
   # Add more helper methods to be used by all tests here...
 end
+# rubocop:enable Lint/EmptyClass

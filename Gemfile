@@ -22,7 +22,7 @@ gem "font-awesome-rails"
 gem "mini_magick"
 
 group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug', :platforms => [:mri, :mingw, :x64_mingw]
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
   gem 'pry-rails'
@@ -42,8 +42,8 @@ group :production do
   gem 'fog'
 end
 
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem 'private-gem-test', github: 'kompiro/private-gem-test'
+gem 'tzinfo-data', :platforms => [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'private-gem-test', :github => 'kompiro/private-gem-test'
 
 group :test do
   gem 'minitest-reporters'

@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_many :posts, dependent: :destroy
+  has_many :posts, :dependent => :destroy
   has_many :likes
   has_many :comments
 
@@ -8,8 +8,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  validates :name, presence: true, length: { maximum: 50 }
-  validates :username, uniqueness: true
+  validates :name, :presence => true, :length => { :maximum => 50 }
+  validates :username, :uniqueness => true
 
   mount_uploader :profile_photo, ProfilePhotoUploader
 

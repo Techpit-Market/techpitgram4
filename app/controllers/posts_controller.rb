@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_post, only: %i(show destroy)
+  before_action :set_post, :only => %i(show destroy)
 
   def index
     @posts = Post.limit(10).includes(:photos, :user, :likes).order('created_at DESC')
@@ -39,10 +39,10 @@ class PostsController < ApplicationController
 
   private
     def post_params
-      params.require(:post).permit(:caption, photos_attributes: [:image]).merge(user_id: current_user.id)
+      params.require(:post).permit(:caption, :photos_attributes => [:image]).merge(:user_id => current_user.id)
     end
 
     def set_post
-      @post = Post.find_by(id: params[:id])
+      @post = Post.find_by(:id => params[:id])
     end
 end

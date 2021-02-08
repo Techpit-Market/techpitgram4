@@ -16,7 +16,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'devise'
 gem 'bootstrap', '~> 4.1.3'
 gem 'jquery-rails'
-gem 'carrierwave', '~> 1.0'
+gem 'carrierwave', '~> 1.3'
 gem "font-awesome-rails"
 gem "mini_magick"
 
